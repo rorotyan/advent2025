@@ -19,6 +19,50 @@ body {
   position: relative;
 }
 
+/* パスワード画面 */
+#passwordScreen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  color: #fff;
+}
+#passwordScreen input {
+  font-family: 'Patrick Hand', sans-serif;
+  font-size: 18px;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+#passwordScreen button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background:#388e3c;
+  color:#fff;
+  font-family: 'Patrick Hand', sans-serif;
+}
+#passwordScreen button:hover { background:#2e7d32; }
+
+/* 動画画面 */
+#videoScreen {
+  display:none;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  justify-content: center;
+  align-items: center;
+  z-index: 90;
+}
+
 /* オーバーレイ */
 .overlay {
   position: fixed;
@@ -52,15 +96,16 @@ body {
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
   padding: 10px;
-  max-width: 350px;
+  max-width: 90vw;
   margin: 0 auto 60px auto;
   position: relative;
   z-index: 2;
+  display:none; /* 最初は非表示 */
 }
 
 /* 扉ボタン */
 .door {
-  background:#fff; /* 白背景 */
+  background:#fff;
   border-radius:8px;
   text-align:center;
   font-size:16px;
@@ -70,20 +115,58 @@ body {
   transition: transform 0.3s, background 0.3s;
   position: relative;
 }
-.door:hover { transform: scale(1.05); background:#f0f0f0; }
+.door:hover { transform: scale(1.05) rotateZ(-1deg); background:#f0f0f0; } /* 手書き風軽く傾く */
 .locked { background:#eee; cursor:not-allowed; opacity:0.6; }
 
 /* 日付文字色 */
-.door.weekday { color: #000; }   /* 平日黒 */
-.door.saturday { color: #1976d2; } /* 土曜日青 */
-.door.sunday { color: #d32f2f; }   /* 日曜日赤 */
+.door.weekday { color: #000; }
+.door.saturday { color: #1976d2; }
+.door.sunday { color: #d32f2f; }
 
-.door.open::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.1); transform-origin:left center; animation:flip 0.4s forwards; }
+/* 扉開きアニメーション */
+.door.open::after {
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(255,255,255,0.1);
+  transform-origin:left center;
+  animation:flip 0.4s forwards;
+  pointer-events: none;
+}
 @keyframes flip { 0%{transform:rotateY(0deg);} 100%{transform:rotateY(180deg);} }
 
-/* モーダル（便箋風） */
-.modal { display:none; position:fixed; z-index:50; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; flex-direction:column; }
-.modal-content { background:url('images/paper-bg.png') no-repeat center center/cover; color:#333; border-radius:12px; padding:20px; text-align:left; width:90%; max-width:400px; box-shadow:0 5px 20px rgba(0,0,0,0.3); overflow-y:auto; max-height:80%; font-family:'Patrick Hand', sans-serif; line-height:1.5em; }
+/* モーダル */
+.modal {
+  display:none;
+  position:fixed;
+  z-index:50;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+.modal-content {
+  background: url('images/paper-bg.png') no-repeat center center/cover;
+  color: #333;
+  border-radius: 16px;
+  padding: 30px 25px;
+  text-align: left;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+  overflow-y: auto;
+  max-height: 80%;
+  font-family: 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif;
+  line-height: 1.8em;
+  font-size: 18px;
+}
 .modal-content p { margin:10px 0; }
 .modal-content a { color:#c62828; text-decoration:none; }
 .modal-content a:hover { text-decoration:underline; }
@@ -93,11 +176,32 @@ body {
 .gallery img { border-radius:8px; height:120px; }
 
 /* 閉じるボタン */
-.close-btn { margin-top:15px; background:#388e3c; color:#fff; padding:10px 20px; border-radius:8px; border:none; cursor:pointer; }
+.close-btn {
+  margin-top:15px;
+  background:#388e3c;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+}
 .close-btn:hover { background:#2e7d32; }
 </style>
 </head>
 <body>
+
+<!-- パスワード画面 -->
+<div id="passwordScreen">
+  <h2>パスワードを入力してください</h2>
+  <input type="password" id="passwordInput" placeholder="パスワード">
+  <button onclick="checkPassword()">OK</button>
+  <p id="passwordError" style="color:#ff6666;margin-top:10px;display:none;">パスワードが違います</p>
+</div>
+
+<!-- 動画画面 -->
+<div id="videoScreen">
+  <video id="introVideo" src="intro.mp4" autoplay muted playsinline></video>
+</div>
 
 <div class="overlay"></div>
 <div class="header">🎄 Advent Calendar 🎁</div>
@@ -132,31 +236,31 @@ for(let i=0;i<30;i++){
 <script>
 // メッセージ内容
 const messages = {
-1:{text:" びっくりした？<br>何か面白いことできないかなと思って、ちまちまこんなの用意してた。", img:["images/day1.jpg","images/day1-2.jpg"]},
-2:{text:" 2日目：今日もあなたが笑ってますように ☺️", img:["images/day2.jpg"]},
-3:{text:" 3日目：このリンクを見てね →", link:"https://example.com"},
-4:{text:" 4日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-5:{text:" 5日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-6:{text:" 6日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-7:{text:" 7日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-8:{text:" 8日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-9:{text:" 9日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-10:{text:" 10日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-11:{text:" 11日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-12:{text:" 12日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-13:{text:" 13日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-14:{text:" 14日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-15:{text:" 15日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-16:{text:" 16日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-17:{text:" 17日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-18:{text:" 18日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-19:{text:" 19日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-20:{text:" 20日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-21:{text:" 21日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-22:{text:" 22日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-23:{text:" 23日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-24:{text:" 24日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-25:{text:" 25日目:メリークリスマス。<br>プレゼントを開けてください。", link:"https://example.com"}
+1:{text:"びっくりした？<br>何か面白いことできないかなと思って、ちまちまこんなの用意してた。", img:["images/day1.jpg","images/day1-2.jpg"]},
+2:{text:"2日目：今日もあなたが笑ってますように ☺️", img:["images/day2.jpg"]},
+3:{text:"3日目：このリンクを見てね →", link:"https://example.com"},
+4:{text:"4日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+5:{text:"5日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+6:{text:"6日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+7:{text:"7日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+8:{text:"8日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+9:{text:"9日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+10:{text:"10日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+11:{text:"11日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+12:{text:"12日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+13:{text:"13日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+14:{text:"14日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+15:{text:"15日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+16:{text:"16日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+17:{text:"17日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+18:{text:"18日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+19:{text:"19日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+20:{text:"20日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+21:{text:"21日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+22:{text:"22日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+23:{text:"23日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+24:{text:"24日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+25:{text:"25日目:メリークリスマス。<br>プレゼントを開けてください。", link:"https://example.com"}
 };
 
 // 今日の日付
@@ -167,22 +271,56 @@ const calendar = document.getElementById('calendar');
 const bgm = document.getElementById('bgm');
 let bgmStarted = false;
 
-// 扉生成（曜日別色分け）
-for(let i=1;i<=25;i++){
-  const door = document.createElement('div');
-  door.className='door';
-  door.textContent=i;
+// BGMを最初のクリックで有効化（スマホ対応）
+document.body.addEventListener('click', () => {
+  if(!bgmStarted){
+    bgm.play().catch(()=>{});
+    bgmStarted = true;
+  }
+}, { once: true });
 
-  // 曜日判定（1日を日曜として計算例）
-  let weekday = (i-1) % 7; // 0:日曜, 6:土曜
-  if(weekday === 5) door.classList.add('sunday');
-  else if(weekday === 6) door.classList.add('saturday');
-  else door.classList.add('weekday');
+// 扉生成
+function showCalendar(){
+  for(let i=1;i<=25;i++){
+    const door = document.createElement('div');
+    door.className='door';
+    door.textContent=i;
 
-  if(i>today){ door.classList.add('locked'); }
-  else{ door.onclick=()=>openModal(i,door); }
+    let weekday = (i-1) % 7;
+    if(weekday === 5) door.classList.add('sunday');
+    else if(weekday === 6) door.classList.add('saturday');
+    else door.classList.add('weekday');
 
-  calendar.appendChild(door);
+    if(i>today){ door.classList.add('locked'); }
+    else{ door.onclick=()=>openModal(i,door); }
+
+    calendar.appendChild(door);
+  }
+  calendar.style.display='grid';
+}
+
+// パスワードチェック
+function checkPassword(){
+  const input = document.getElementById('passwordInput').value;
+  if(input === "toyroom"){
+    document.getElementById('passwordScreen').style.display='none';
+    playVideo();
+  } else{
+    document.getElementById('passwordError').style.display='block';
+    document.getElementById('passwordInput').value='';
+  }
+}
+
+// 動画再生
+function playVideo(){
+  const videoScreen = document.getElementById('videoScreen');
+  const video = document.getElementById('introVideo');
+  videoScreen.style.display='flex';
+  video.play();
+  video.onended = () => {
+    videoScreen.style.display='none';
+    showCalendar();
+  };
 }
 
 // モーダル開く
