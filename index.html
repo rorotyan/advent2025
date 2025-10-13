@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎄 Advent Calendar for You 🎁</title>
+<title>🎄 Advent Calendar 🎁</title>
 
 <!-- 手書き風フォント -->
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
@@ -100,7 +100,7 @@ body {
 <body>
 
 <div class="overlay"></div>
-<div class="header">🎄 Advent Calendar for You 🎁</div>
+<div class="header">🎄 Advent Calendar 🎁</div>
 
 <!-- BGM -->
 <audio id="bgm" loop>
@@ -132,10 +132,31 @@ for(let i=0;i<30;i++){
 <script>
 // メッセージ内容
 const messages = {
-1:{text:"🎁 1日目：あなたに出会えた奇跡に感謝してるよ 💕", img:["images/day1.jpg","images/day1-2.jpg"]},
-2:{text:"🌟 2日目：今日もあなたが笑ってますように ☺️", img:["images/day2.jpg"]},
-3:{text:"💌 3日目：このリンクを見てね →", link:"https://example.com"},
-4:{text:"🎅 4日目：クリスマスまであと少し！", img:["images/day4.jpg"]}
+1:{text:" びっくりした？<br>何か面白いことできないかなと思って、ちまちまこんなの用意してた。", img:["images/day1.jpg","images/day1-2.jpg"]},
+2:{text:" 2日目：今日もあなたが笑ってますように ☺️", img:["images/day2.jpg"]},
+3:{text:" 3日目：このリンクを見てね →", link:"https://example.com"},
+4:{text:" 4日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+5:{text:" 5日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+6:{text:" 6日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+7:{text:" 7日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+8:{text:" 8日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+9:{text:" 9日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+10:{text:" 10日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+11:{text:" 11日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+12:{text:" 12日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+13:{text:" 13日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+14:{text:" 14日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+15:{text:" 15日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+16:{text:" 16日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+17:{text:" 17日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+18:{text:" 18日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+19:{text:" 19日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+20:{text:" 20日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+21:{text:" 21日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+22:{text:" 22日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+23:{text:" 23日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+24:{text:" 24日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
+25:{text:" 25日目:メリークリスマス。<br>プレゼントを開けてください。", link:"https://example.com"}
 };
 
 // 今日の日付
@@ -182,7 +203,7 @@ function openModal(day,door){
       data.img.forEach(src=>{ html+=`<img src="${src}">`; });
       html+=`</div>`;
     }
-    if(data.link) html+=`<p><a href="${data.link}" target="_blank">こちらへ💌</a></p>`;
+    if(data.link) html+=`<p><a href="${data.link}" target="_blank">🎁</a></p>`;
     content.innerHTML=html;
   }
 
