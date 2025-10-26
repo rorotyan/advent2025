@@ -46,11 +46,11 @@ body {
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  background:#388e3c;
+  background:#cbb3e6;
   color:#fff;
   font-family: 'Patrick Hand', sans-serif;
 }
-#passwordScreen button:hover { background:#2e7d32; }
+#passwordScreen button:hover { background:#cbb3e6; }
 
 /* 動画画面 */
 #videoScreen {
@@ -165,7 +165,7 @@ body {
   max-height: 80%;
   font-family: 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif;
   line-height: 1.8em;
-  font-size: 18px;
+  font-size: 15px;
 }
 .modal-content p { margin:10px 0; }
 .modal-content a { color:#c62828; text-decoration:none; }
@@ -178,14 +178,14 @@ body {
 /* 閉じるボタン */
 .close-btn {
   margin-top:15px;
-  background:#388e3c;
+  background:#cbb3e6;
   color:#fff;
   padding:10px 20px;
   border-radius:8px;
   border:none;
   cursor:pointer;
 }
-.close-btn:hover { background:#2e7d32; }
+.close-btn:hover { background:#cbb3e6; }
 </style>
 </head>
 <body>
@@ -193,9 +193,9 @@ body {
 <!-- パスワード画面 -->
 <div id="passwordScreen">
   <h2>パスワードを入力してください</h2>
-  <input type="password" id="passwordInput" placeholder="パスワード">
-  <button onclick="checkPassword()">OK</button>
-  <p id="passwordError" style="color:#ff6666;margin-top:10px;display:none;">パスワードが違います</p>
+  <input type="password" id="passwordInput" placeholder="****/**/**">
+  <button onclick="checkPassword()">GO</button>
+  <p id="passwordError" style="color:#ff6666;margin-top:10px;display:none;">パスワードが違いますけども。</p>
 </div>
 
 <!-- 動画画面 -->
@@ -230,37 +230,37 @@ for(let i=0;i<30;i++){
 <!-- モーダル -->
 <div id="modal" class="modal">
   <div class="modal-content" id="modalContent"></div>
-  <button class="close-btn" onclick="closeModal()">閉じる</button>
+  <button class="close-btn" onclick="closeModal()">とじる</button>
 </div>
 
 <script>
 // メッセージ内容
 const messages = {
-1:{text:"びっくりした？<br>何か面白いことできないかなと思って、ちまちまこんなの用意してた。", img:["images/day1.jpg","images/day1-2.jpg"]},
-2:{text:"2日目：今日もあなたが笑ってますように ☺️", img:["images/day2.jpg"]},
-3:{text:"3日目：このリンクを見てね →", link:"https://example.com"},
-4:{text:"4日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-5:{text:"5日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-6:{text:"6日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-7:{text:"7日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-8:{text:"8日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-9:{text:"9日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-10:{text:"10日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-11:{text:"11日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-12:{text:"12日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-13:{text:"13日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-14:{text:"14日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-15:{text:"15日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-16:{text:"16日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-17:{text:"17日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-18:{text:"18日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-19:{text:"19日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-20:{text:"20日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-21:{text:"21日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-22:{text:"22日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-23:{text:"23日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-24:{text:"24日目：クリスマスまであと少し！", img:["images/day4.jpg"]},
-25:{text:"25日目:メリークリスマス。<br>プレゼントを開けてください。", link:"https://example.com"}
+1:{text:"びっくりした？<br>何か面白いことできないかなと思って、ちまちまこんなの用意してた。<br>ちょっとした楽しみにでもなったら嬉しいです。<br>ということで、1日目のプレゼントはこのカレンダーです。ちょっとずるかもこれ。25日分考えるのって大変なんだ。大目に見てください。"},
+2:{text:"2日目のプレゼントは、肩たたき券です。いいですか？肩たたき券です。昨日とどっちが驚いた？2日目でもうネタ切れ！？と思った？見てろよ、僕の肩たたきのテクニックを。"},
+3:{text:"3日目のプレゼントは、警告です。いやあ、ありがたいよね、警告。己の身を守る為には必要なものではないでしょうか。この先25日までの期間、2日目がそうであったように色んな券がアドベントカレンダーによってプレゼントされますが、使用するか否かは君次第です。いっぱいあるからって消費しないと…！なんて思わなくていい。なんとなくふと思い出した時にちょっとしたお遊び要素や話のタネになるくらいでいいよと。そういうお話です。"},
+4:{text:"4日目です。昨日の警告は憶えておりますでしょうか。今日のプレゼントはルンルン券です。なんだそれ。と思いましたか？僕も思ってるよ。早くも4日目でな。"},
+5:{text:"5日目です。ここまでカレンダーと警告と摩訶不思議な券を２枚押し付けられたガクくんの気持ちを想像すると、僕は胃が痛まないでもないよ。<br>さて、そんな本日ではございますが、こちらのプレゼントボックスを開けてください。",link:"https://giftee.com/r/PgH3YngByYrJTkMDvnkZe8YuEXQhHHgN"},
+6:{text:"6日目のプレゼントは、ひと口チョコです。僕が保管しているのでお申し付けください。ちなみに、いちごとキャラメルがあるよ。お好きな方を選んでください。"},
+7:{text:"7日目のプレゼントは、あの日の君の罰ゲームになぞらえて。君の好きなところを3つ。<br>1つ。距離感の取り方が上手なところ。僕が安牌を選びすぎるきらいがあるから、適度に選択肢を増やしてくれるのがありがたい。僕以外にもそう思っている人は多そう。<br>2つ。甘え上手なところ。甘えられるのって嬉しいし、愛情が伝わってんだなあと思って安心するところがある。いい塩梅で甘えてくれて大変助かっています。<br>3つ。基本柔軟で人に合わせられる人ではありつつ、芯はしっかりあるところ。お互いの芯がぶつかって譲れない瞬間がちょくちょく出てきたなって、1年が近づいたあたりから感じるようになってきた。なんでも合わせてもらうとかなんでもいいよりずっといいし、その時は納得できないって顔をしてしまうかもしれないけど、君という僕にとって大切な人の価値観だからこそ僕も、納得できなくとも理解は死体と思えるから、見識の広がりを感じる。君との時間で僕自身が成長できると感じます。"},
+8:{text:"8日目のプレゼントはこちらになります。本来のアドベントカレンダーってこういうものだよね。",link:"https://example.com"},
+9:{text:"9日目のプレゼントは、ログです。なんの？って思うでしょ。キス部屋のログです。アドベントカレンダーに他の人間とのキス部屋のログ入れるやつ何なんだよ。だってガクくんが読んでみたいって前に言ってたんだもん。本当だぞこれは。見たくなかったら捨ておいてください。",link:"https://rorotyan.github.io/chatlog/"},
+10:{text:"10日目の今日は、僕らがお付き合いして1年と5ケ月の日です。来月で1.5周年だそうで。早いねえ。<br>ということでプレゼントは、1日変身券です。<br>君が用意したものでもいいし、リクエストがあれば僕が用意しますが、好きな姿に変身します。石だろうが米粒だろうがなんだって。1日とはいうけど、君の好きなタイミングで元に戻してください。<br>丸1日石とかになるとそれは「黙れ」と同義だけどな。"},
+11:{text:"11日目のプレゼントは、"},
+12:{text:"12日目のプレゼントは思い出です。ガクくん憶えてるかなあこれ。", img:["images/day4.jpg"]},
+13:{text:"13日目のプレゼントは、簡単デート券です。ガクくんが食べたいもの食べに行こう。コンビニでもいいし、どこかしらのチェーン店でもいい。この間のコンビニデートみたいに気楽に君と時間を共有できる券です。気づいた？僕がやりたいだけ。"},
+14:{text:"14日目のプレゼントは、",link:"https://example.com"},
+15:{text:"15日目のプレゼントは、"},
+16:{text:"16日目のプレゼントは、"},
+17:{text:"17日目のプレゼントは、"},
+18:{text:"18日目のプレゼントは、こちらです。定期的にアドベントカレンダーに本来の顔を思い出させる試み。",link:"https://example.com"},
+19:{text:"19日目のプレゼントは、", img:["images/day4.jpg"]},
+20:{text:"20日目のプレゼントは、1日媚び貫通券です。そろそろ僕の手札が限界なことにお気づきでしょうか。きっと後で僕はこの券にしたことを後悔するよ。君の目に触れるまでこの内容が変わってないのだとしたら、僕の漢気は相当なものだ。褒められるべき。"},
+21:{text:"21日目のプレゼントは、こちらになります。君がドン引かないことを切に願ってる。思いついた時点でなんか…もしかしてめっちゃ重くないか…？と思ったんだけどさあ…。思いついちゃったんだから仕方なくないか。",link:"https://example.com"},
+22:{text:"22日目のプレゼントはピノです。ちなみに僕の分も買ってきてあります。引き換えられたら教えて。一緒に食べよう。", link:"https://example.com"},
+23:{text:"23日目のプレゼントは、"},
+24:{text:"24日目の今日は、手紙を用意してみました。はたしていつ書いた手紙だろうね。下手したら内容に齟齬が生まれてるかもしれないけど、君を思って書いたことに間違いはないでしょう。", img:["images/day4.jpg"]},
+25:{text:"25個プレゼントを考えるって、よく考えたら正気の沙汰ではなかったなと我ながら思ってる。でも君が楽しめたなら、やってみてよかったなと思います。ということで、メリークリスマス。<br>プレゼントを開けてください。", link:"https://example.com"}
 };
 
 // 今日の日付
@@ -302,7 +302,7 @@ function showCalendar(){
 // パスワードチェック
 function checkPassword(){
   const input = document.getElementById('passwordInput').value;
-  if(input === "toyroom"){
+  if(input === "20240710"){
     document.getElementById('passwordScreen').style.display='none';
     playVideo();
   } else{
@@ -341,7 +341,14 @@ function openModal(day,door){
       data.img.forEach(src=>{ html+=`<img src="${src}">`; });
       html+=`</div>`;
     }
-    if(data.link) html+=`<p><a href="${data.link}" target="_blank">🎁</a></p>`;
+    if (data.link)
+  html += `
+    <p style="text-align:center;">
+      <a href="${data.link}" target="_blank">
+        <img src="images/present.png" alt="プレゼント" style="width:90px; height:90px; cursor:pointer;">
+      </a>
+    </p>
+  `;
     content.innerHTML=html;
   }
 
