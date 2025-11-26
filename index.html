@@ -59,7 +59,7 @@ body {
   background: transparent;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* ★最前面に配置 */
+  z-index: 9999; /* ★最前面に配置 */
 }
 #videoScreen video {
   position: absolute;
@@ -74,7 +74,7 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.2);
-  z-index: -1; /* ★動画の後ろへ移動 */
+  z-index: 0; /* ★動画の後ろへ移動 */
 }
 
 /* タイトル */
@@ -82,19 +82,30 @@ body {
   text-align: center;
   margin: 40px 0 20px 0;
   font-size: 36px;
-  text-shadow: 0 0 5px #fff, 0 0 10px #ff0, 0 0 20px #f00;
-  animation: glow 2s infinite alternate;
   position: relative;
-  z-index: 2;
+  z-index: 2; /* ★動画より下 */
 }
+
 @keyframes glow {
   0%{ text-shadow: 0 0 5px #fff, 0 0 10px #ff0; }
   100%{ text-shadow: 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #f00; }
 }
 
 /* 雪 */
-@keyframes snow { 0%{ transform: translateY(0); opacity:1;} 100%{transform:translateY(100vh);opacity:0;} }
-.snowflake { position: fixed; top:-10px; color:white; opacity:0.9; font-size:22px; animation:snow linear infinite; pointer-events:none; }
+@keyframes snow {
+  0%{ transform: translateY(0); opacity:1;}
+  100%{transform:translateY(100vh);opacity:0;}
+}
+.snowflake {
+  position: fixed;
+  top:-10px;
+  color:white;
+  opacity:0.9;
+  font-size:22px;
+  animation:snow linear infinite;
+  pointer-events:none;
+  z-index: 500; /* ★動画より前に降らせる */
+}
 
 /* カレンダー（7列） */
 .calendar {
