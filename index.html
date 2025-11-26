@@ -56,10 +56,10 @@ body {
   display: none;
   position: fixed;
   inset: 0;
-  background: transparent; /* 透過 */
+  background: transparent;
   justify-content: center;
   align-items: center;
-  z-index: 0; /* サイトコンテンツより下 */
+  z-index: 1000; /* ★最前面に配置 */
 }
 #videoScreen video {
   position: absolute;
@@ -74,7 +74,7 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.2);
-  z-index: 1;
+  z-index: -1; /* ★動画の後ろへ移動 */
 }
 
 /* タイトル */
@@ -210,11 +210,13 @@ body {
 </div>
 
 <!-- 動画画面 -->
+<!-- 動画画面 -->
 <div id="videoScreen">
   <video id="introVideo" autoplay muted playsinline>
-    <source src="op.webm" type="video/webm">
+    <source src="op.mp4" type="video/mp4">
   </video>
 </div>
+
 
 <div class="overlay"></div>
 <div class="header">🎄 Advent Calendar 🎁</div>
