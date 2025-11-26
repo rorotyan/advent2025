@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎄 Advent Calendar 🎁</title>
 
-<!-- 手書き風フォント -->
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
@@ -52,15 +51,22 @@ body {
 }
 #passwordScreen button:hover { background:#cbb3e6; }
 
-/* 動画画面 */
+/* 動画画面（透過WebM用） */
 #videoScreen {
-  display:none;
+  display: none;
   position: fixed;
   inset: 0;
-  background: #000;
+  background: transparent; /* 透過 */
   justify-content: center;
   align-items: center;
-  z-index: 90;
+  z-index: 0; /* サイトコンテンツより下 */
+}
+#videoScreen video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* オーバーレイ */
@@ -68,7 +74,7 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.2);
-  z-index: 0;
+  z-index: 1;
 }
 
 /* タイトル */
@@ -115,7 +121,7 @@ body {
   transition: transform 0.3s, background 0.3s;
   position: relative;
 }
-.door:hover { transform: scale(1.05) rotateZ(-1deg); background:#f0f0f0; } /* 手書き風軽く傾く */
+.door:hover { transform: scale(1.05) rotateZ(-1deg); background:#f0f0f0; }
 .locked { background:#eee; cursor:not-allowed; opacity:0.6; }
 
 /* 日付文字色 */
@@ -165,7 +171,7 @@ body {
   max-height: 80%;
   font-family: 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif;
   line-height: 1.8em;
-  font-size: 16px; /* 本文をスマホでも読みやすく統一 */
+  font-size: 16px;
 }
 .modal-content p { margin:10px 0; }
 .modal-content a { color:#c62828; text-decoration:none; }
@@ -187,7 +193,6 @@ body {
 }
 .close-btn:hover { background:#cbb3e6; }
 
-/* スマホ向け微調整 */
 @media (max-width:480px){
   .modal-content { font-size:16px; padding:20px; max-width:95%; }
   .door { font-size:18px; padding:18px 0; }
@@ -206,7 +211,9 @@ body {
 
 <!-- 動画画面 -->
 <div id="videoScreen">
-  <video id="introVideo" src="intro.mp4" autoplay muted playsinline></video>
+  <video id="introVideo" autoplay muted playsinline>
+    <source src="op.webm" type="video/webm">
+  </video>
 </div>
 
 <div class="overlay"></div>
@@ -240,6 +247,15 @@ for(let i=0;i<30;i++){
 </div>
 
 <script>
+// BGM制御
+const bgm = document.getElementById('bgm');
+let bgmStarted = false;
+document.body.addEventListener('click', () => {
+  if(!bgmStarted){
+    bgm.play().catch(()=>{});
+    bgmStarted = true;
+  }
+}, { once: true });
 // メッセージ内容
 const messages = {
 1:{text:"びっくりした？<br>何か面白いことできないかなと思って、ちまちまこんなの用意してた。<br>ちょっとした楽しみにでもなったら嬉しいです。<br>ということで、1日目のプレゼントはこのカレンダーです。ちょっとずるかもこれ。25日分考えるのって大変なんだ。大目に見てください。"},
@@ -273,18 +289,6 @@ const messages = {
 const today = new Date().getDate();
 const calendar = document.getElementById('calendar');
 
-// BGM制御
-const bgm = document.getElementById('bgm');
-let bgmStarted = false;
-
-// BGMを最初のクリックで有効化（スマホ対応）
-document.body.addEventListener('click', () => {
-  if(!bgmStarted){
-    bgm.play().catch(()=>{});
-    bgmStarted = true;
-  }
-}, { once: true });
-
 // 扉生成
 function showCalendar(){
   for(let i=1;i<=25;i++){
@@ -297,28 +301,15 @@ function showCalendar(){
     else if(weekday === 6) door.classList.add('saturday');
     else door.classList.add('weekday');
 
-    // 今日の情報
-const now = new Date();
-const y = now.getFullYear();
-const m = now.getMonth() + 1; // 1〜12
-const d = now.getDate();
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = now.getMonth() + 1;
+    const d = now.getDate();
 
-// ロックの条件（2025年11月 → 全解放、2025年12月 → 日付制限、それ以降 → 全解放）
-let isLocked = false;
-
-if (y === 2025 && m === 12) {
-  // 2025年12月だけ日付が来ていない日はロック
-  isLocked = (i > d);
-} else {
-  // それ以外の期間（2025年11月も含む）は常に解放
-  isLocked = false;
-}
-
-if (isLocked) {
-  door.classList.add('locked');
-} else {
-  door.onclick = () => openModal(i, door);
-}
+    let isLocked = false;
+    if (y === 2025 && m === 12) { isLocked = (i > d); }
+    if(isLocked) door.classList.add('locked');
+    else door.onclick = () => openModal(i, door);
 
     calendar.appendChild(door);
   }
@@ -337,12 +328,15 @@ function checkPassword(){
   }
 }
 
-// 動画再生
+// 動画再生（透過WebM）
 function playVideo(){
   const videoScreen = document.getElementById('videoScreen');
   const video = document.getElementById('introVideo');
+
   videoScreen.style.display='flex';
   video.play();
+  video.loop = false; // ループさせない
+
   video.onended = () => {
     videoScreen.style.display='none';
     showCalendar();
@@ -368,13 +362,11 @@ function openModal(day,door){
       html+=`</div>`;
     }
     if (data.link)
-  html += `
-    <p style="text-align:center;">
-      <a href="${data.link}" target="_blank">
-        <img src="images/present.png" alt="プレゼント" style="width:90px; height:90px; cursor:pointer;">
-      </a>
-    </p>
-  `;
+      html += `<p style="text-align:center;">
+        <a href="${data.link}" target="_blank">
+          <img src="images/present.png" alt="プレゼント" style="width:90px; height:90px; cursor:pointer;">
+        </a>
+      </p>`;
     content.innerHTML=html;
   }
 
